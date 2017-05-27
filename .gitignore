@@ -1,4 +1,4 @@
 node_modules
 db
-config
+config/settigs.json
 vendor

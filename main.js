@@ -14,6 +14,8 @@ function createWindow () {
     icon: path.join(__dirname, '/images/clock.png') //'icon': 'file://' + __dirname + '/../images/icon.png',
 })
 
+  //win.setPosition(0, 10);
+
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),

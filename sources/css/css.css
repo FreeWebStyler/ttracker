@@ -1,0 +1,17 @@
+body {
+    margin: 10px;
+}
+
+#debug {
+    height: 100px;
+    border: 1px solid #CCC;
+}
+
+#search-res {
+    width: 500px;
+    height: 250px;
+}
+
+#restart {
+    float: right;
+}
