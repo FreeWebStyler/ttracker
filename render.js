@@ -1,11 +1,11 @@
+const ipc = require('electron').ipcRenderer;
+const fs  = require("fs");
+
 function cl(m){ console.log(m);}
 
 function debug(m){ cl(m); $('#debug').html(m); }
 function da(m){ cl(m); $('#debug').append('<br>'+m); }
 function isset(e){ return typeof e != 'undefined' ? true : false;};
-
-const ipc = require('electron').ipcRenderer;
-const fs  = require("fs");
 
 //const settings = require('./config/settings');
 settings = null;
@@ -16,7 +16,7 @@ fs.readFile(settings_fp, 'utf-8', function (err, data) {
         console.error('An error ocurred reading the file :' + err.message);
         return;
     }
-    try{
+    try {
         settings = JSON.parse(data);
     } catch(e){
         alert('Error! Can\'t parse settings file "' + settings_fp +'".\nException: ' + e);
@@ -188,13 +188,11 @@ $(window).resize(function() {
     resizeTime = new Date().getTime();
 
     if(resizeInterval === null){
-
         resizeInterval = setInterval(
-
             function(){
                 var nowTime = new Date().getTime();
                 if((nowTime - resizeTime) > 1000){
-                    ipc.send('save_settings', {option: 'window_size', value: { width : window.innerWidth, height: window.innerHeight } });
+                    ipc.send('save_settings', {option: 'window_size', value: { width : window.outerWidth, height: window.outerHeight } });
                     resizeTime = nowTime;
                     clearInterval(resizeInterval);
                     resizeInterval = null;
@@ -202,3 +200,13 @@ $(window).resize(function() {
             }, 300);
     }
 });
+
+lastX = window.screenX;
+lastY = window.screenY;
+
+interval = setInterval(function(){
+    if(window.screenX != lastX || lastY != window.screenY){
+         ipc.send('save_settings', {option: 'window_position', value: { x : window.screenX, y: window.screenY } });
+         lastX = window.screenX; lastY = window.screenY;
+    }
+}, 500);
